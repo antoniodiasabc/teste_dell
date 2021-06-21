@@ -22,8 +22,14 @@ public class ControllerTest {
 	HangManControler hangmanControler;
 
 	@Test
-	public void test() {
-		assertTrue(true);
+	public void testNewGame() {
+		HangMan hangMan = new HangMan();
+		hangMan.setLetter("new");
+		HangMan hangmanplay = hangmanControler.hangmanplay(hangMan, null);
+		assertTrue(hangmanplay != null);
+		assertTrue(hangmanplay.getDraft() != null);
+		System.out.println(hangmanplay.getDraft());
+
 	}
 
 	@Test
@@ -34,16 +40,6 @@ public class ControllerTest {
 		assertTrue(modelview.getViewName().equals("redirect:/hangman.html"));
 	}
 
-	@Test
-	public void testNewGame() {
-		HangMan hangMan = new HangMan();
-		hangMan.setLetter("new");
-		HangMan hangmanplay = hangmanControler.hangmanplay(hangMan, null);
-		assertTrue(hangmanplay != null);
-		assertTrue(hangmanplay.getDraft() != null);
-		System.out.println(hangmanplay.getDraft());
-
-	}
 
 	@Test
 	public void testDrawn() {
@@ -60,5 +56,55 @@ public class ControllerTest {
 		assertTrue(hangmanplay.getTyped().length() == 1);
 	}
 
+	@Test
+	public void testDrawnRepeated() {
+		MockHttpSession session = new MockHttpSession();
+
+		HangMan hangMan = new HangMan();
+
+		hangMan.setLetter("A");
+		session.setAttribute("hangman", hangMan);
+
+		HangMan hangmanplay = hangmanControler.hangmanplay(hangMan, session);
+		assertTrue(hangmanplay != null);
+		assertTrue(hangmanplay.getDraft() != null);
+		assertTrue(hangmanplay.getTyped().length() == 1);
+
+		hangMan.setLetter("A");
+		session.setAttribute("hangman", hangMan);
+
+		hangmanplay = hangmanControler.hangmanplay(hangMan, session);
+		assertTrue(hangmanplay != null);
+		assertTrue(hangmanplay.getDraft() != null);
+		assertTrue(hangmanplay.getTyped().length() == 1);
+	}
+
+	@Test
+	public void testDrawn2Letters() {
+		MockHttpSession session = new MockHttpSession();
+
+		HangMan hangMan = new HangMan();
+
+		hangMan.setLetter("new");
+		HangMan hangmanplay = hangmanControler.hangmanplay(hangMan, null);
+		assertTrue(hangmanplay != null);
+		assertTrue(hangmanplay.getDraft() != null);
+		session.setAttribute("hangman", hangmanplay);
+
+		hangMan.setLetter("A");
+
+		HangMan h2 = hangmanControler.hangmanplay(hangMan, session);
+		assertTrue(h2 != null);
+		assertTrue(h2.getDraft() != null);
+		assertTrue(h2.getTyped().length() == 1);
+		session.setAttribute("hangman", h2);
+
+		hangMan.setLetter("W");
+
+		HangMan h3 = hangmanControler.hangmanplay(hangMan, session);
+		assertTrue(h3 != null);
+		assertTrue(h3.getDraft() != null);
+		assertTrue(h3.getTyped().length() == 2);
+	}
 
 }

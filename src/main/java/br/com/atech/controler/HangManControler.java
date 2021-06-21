@@ -52,7 +52,6 @@ public class HangManControler {
 				result.setMaxChances(maxChances);
 				result.setFound(0);
 				result.setChancesUsed(0);
-				result.setStatus("playing");
 				result.setDraftBlocked(getBlockedDraft(draft));
 				result.setStatus("playing");
 				session.setAttribute("hangman", result);
@@ -119,7 +118,7 @@ public class HangManControler {
 	}
 
 	private String getBlocked(String draft, String letter) {
-		StringBuffer result = new StringBuffer(getBlockedDraft(draft));
+		StringBuilder result = new StringBuilder(getBlockedDraft(draft));
 		for (int j = 0; j < letter.length(); j++) {
 			for (int i = 0; i < draft.length(); i++) {
 				char one = letter.charAt(j);
