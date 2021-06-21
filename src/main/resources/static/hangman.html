@@ -13,7 +13,7 @@
 .botao-travado {
 	display: block;
 	width: 115px;
-	height: 20px;
+	height: 30px;
 	background: gray-light;
 	padding: 0px;
 	text-align: center;
@@ -25,7 +25,7 @@
 .botao-livre {
 	display: block;
 	width: 115px;
-	height: 20px;
+	height: 30px;
 	background: #4E9CAF;
 	padding: 0px;
 	text-align: center;
@@ -45,7 +45,7 @@
 		<table id="table_menu">
 			<tr class="permanent_tr">
 				<td class="permanent_td" align="left">Enter a Letter: <br>
-					<input type="text" size="10" id="letter">
+					<input type="text" size="2" id="letter" maxlength="1" >
 				</td>
 				<td id="dtf" class="permanent_td" align="left">Magic Word: <br>
 					<input type="text" id="palavra" readonly
@@ -62,6 +62,9 @@
 						</table>
 					</div>
 				</td>
+				<td class="permanent_td" align="left">message: <br> <input
+					type="text" size="30" id="message" readonly >
+				</td>
 			</tr>
 			<tr>
 				<td id="dti" class="permanent_td" align="left">typed: <br>
@@ -69,16 +72,16 @@
 				</td>
 
 				<td class="permanent_td" align="left">rights: <br> <input
-					type="text" size="10" id="acertos" th:value="${found}">
+					type="text" size="10" id="acertos" th:value="${found}" readonly >
 				</td>
 				<td class="permanent_td" align="left">wrongs: <br> <input
-					type="text" size="10" id="erros" th:value="${param1}">
+					type="text" size="10" id="erros" th:value="${param1}" readonly >
 				</td>
 				<td class="permanent_td" align="left">remains: <br> <input
-					type="text" size="10" id="chances">
+					type="text" size="10" id="chances" readonly >
 				</td>
 				<td class="permanent_td" align="left">status: <br> <input
-					type="text" size="10" id="status" th:value="${hangman.status}">
+					type="text" size="10" id="status" th:value="${hangman.status}" readonly >
 				</td>
 			</tr>
 		</table>
@@ -91,8 +94,9 @@
 <script>
 	$(function() {
 
+		$("#letter" ).prop( "disabled", true );
+
 		$("#btn_generate_graph").click(function() {
-			//alert('generate');
 
 			var params = [];
 			params["letter"] = $("#letter").val();
@@ -107,7 +111,6 @@
 		}
 
 		function generate_graph(params) {
-			//alert('submit');
 			$("#loading").removeAttr("hidden");
 			$("#btn_generate_graph").attr('disabled', '');
 			$("#btn_generate_graph").attr('class', 'botao-travado');
@@ -122,7 +125,6 @@
 				contentType : "application/json; charset=utf-8",
 				dataType : "json",
 				success : function(data) {
-					//alert(data.status);
 
 					console.log(data.status);
 					$("#loading").attr('hidden', '');
@@ -135,6 +137,16 @@
 					$("#erros").val(data.chancesUsed);
 					$("#chances").val(data.maxChances);
 					$("#letter").val('');
+					$("#message").val(data.message);
+
+					if(data.status == 'lost'){
+						 $("#letter" ).prop( "disabled", true );
+						 //$('#letter').attr('disabled', 'disabled');
+						 $("#palavra").val(data.draft);
+					}
+					if(data.status == 'won'){
+						 $('#letter').attr('disabled', 'disabled');
+					}
 				},
 				error : function(err) {
 					alert('error: ' + err)
@@ -144,7 +156,6 @@
 		}
 
 		$("#newgame").click(function() {
-		//	alert('new game');
 			var complete_data = new Object();
 
 			complete_data.letter = 'new';
@@ -162,8 +173,9 @@
 					$("#erros").val(data.chancesUsed);
 					$("#chances").val(data.maxChances);
 
-					//alert(data);
-					//console.log(data);
+					//$("input").removeAttr('disabled');
+				    $( "#letter" ).prop( "disabled", false );
+
 				},
 				error : function(err) {
 					alert('error: ' + err)

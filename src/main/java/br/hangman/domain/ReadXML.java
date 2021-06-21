@@ -1,4 +1,4 @@
-package br.hangman.teste;
+package br.hangman.domain;
 
 import java.io.File;
 import java.io.IOException;
