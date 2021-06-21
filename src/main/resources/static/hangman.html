@@ -143,9 +143,11 @@
 						 $("#letter" ).prop( "disabled", true );
 						 //$('#letter').attr('disabled', 'disabled');
 						 $("#palavra").val(data.draft);
+						 $("#message").val('TRY AGAIN LATER');
 					}
 					if(data.status == 'won'){
 						 $('#letter').attr('disabled', 'disabled');
+						 $("#message").val('CONGRATULATIONS');
 					}
 				},
 				error : function(err) {

@@ -13,7 +13,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +31,7 @@ public class HangManControler {
 	protected final Logger Log = Logger.getLogger("HangManControler");
 
 	@RequestMapping(value = "/hangmanserver")
-	public HangMan hangmanplay(@RequestBody HangMan jogada, ModelMap model, HttpSession session) {
+	public HangMan hangmanplay(@RequestBody HangMan jogada, HttpSession session) {
 		Log.info("received " + jogada.getLetter());
 
 		HangMan result = new HangMan();
@@ -56,9 +55,6 @@ public class HangManControler {
 				result.setStatus("playing");
 				result.setDraftBlocked(getBlockedDraft(draft));
 				result.setStatus("playing");
-				model.addAttribute("hangman", result);
-				model.addAttribute("status", "playing");
-				model.addAttribute("found", "0");
 				session.setAttribute("hangman", result);
 			} catch (Exception e) {
 				Log.warning(e.getMessage());

@@ -1,22 +1,22 @@
 package teste;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.Random;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import br.com.atech.ApplicationHangMan;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = ApplicationHangMan.class)
 public class TesteSelenium {
-
-	@Test
-	public void test() {
-		assertTrue(true);
-	}
 
 	@Test
 	public void openFirefox() {
@@ -46,7 +46,7 @@ public class TesteSelenium {
 			val = remains.getAttribute("value");
 			statusGame = status.getAttribute("value");
 			String letDis = letterEntered.getAttribute("disabled");
-			System.out.println("typed " + letter +" letter status " + letDis + " chances " + val);
+			System.out.println("typed " + letter + " letter status " + letDis + " chances " + val);
 		} while (!val.equals("0") && !statusGame.equals("won"));
 	}
 
